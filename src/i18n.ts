@@ -42,5 +42,4 @@ export const t = {
 
 export type Lang = keyof typeof t;
 
-// TODO: email real de contacto (en la maqueta era un placeholder)
-export const MAIL = 'hola@tu-dominio.dev';
+export const MAIL = 'ignacioaroza.ia@gmail.com';

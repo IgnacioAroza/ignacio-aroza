@@ -1,0 +1,38 @@
+---
+import '../styles/global.css';
+import { t, type Lang } from '../i18n';
+
+const { lang } = Astro.props as { lang: Lang };
+const s = t[lang];
+---
+
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{s.title}</title>
+    <meta name="description" content={s.headline} />
+  </head>
+  <body class="min-h-screen bg-neutral-950 font-mono text-neutral-200">
+    <nav class="flex justify-between p-6 text-sm">
+      <span class="flex items-center gap-2">
+        <span class="size-2 rounded-full bg-green-400"></span>{s.open}
+      </span>
+      <a href={s.other.href} class="hover:text-amber-200">{s.other.label}</a>
+    </nav>
+
+    <main class="mx-auto max-w-5xl px-6 pt-16">
+      <h1 class="text-5xl font-bold sm:text-7xl">
+        I<span class="caret" aria-hidden="true"></span>A
+        <span class="sr-only">Ignacio Aroza</span>
+      </h1>
+      <p class="mt-4 text-amber-200">{s.role}</p>
+      <p class="mt-6 max-w-2xl text-2xl leading-snug">{s.headline}</p>
+      <div class="mt-8 flex gap-4">
+        <a href={`/cv-${lang}.pdf`} class="rounded bg-amber-200 px-4 py-2 text-neutral-950">{s.cv}</a>
+        <a href="#contacto" class="rounded border border-neutral-700 px-4 py-2">{s.contact}</a>
+      </div>
+    </main>
+  </body>
+</html>

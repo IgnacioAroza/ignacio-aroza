@@ -138,7 +138,7 @@ const prompt = 'ignacio@aroza ~ >';
 .dot { width: 8px; height: 8px; border-radius: 50%; background: #5fd49a; display: inline-block; margin-right: 6px; }
 h1 { font: 800 clamp(44px, 7.4vw, 92px)/.94 var(--f-display); letter-spacing: -0.035em; margin: 28px 0 0; text-wrap: balance; }
 h1 .caret { margin-left: .08em; }
-.kicker { font: 500 13px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-top: 24px; }
+.kicker { font: 500 16px var(--f-body); color: var(--accent); margin-top: 24px; }
 .role { font: 600 clamp(21px, 2.4vw, 29px)/1.22 var(--f-display); letter-spacing: -0.015em; color: var(--fg); margin: 12px 0 0; max-width: 28ch; text-wrap: balance; }
 .lede { font: 400 17px/1.55 var(--f-body); color: var(--muted); margin: 18px 0 0; max-width: 44ch; text-wrap: pretty; }
 .cta { display: flex; gap: 12px 20px; flex-wrap: wrap; margin-top: 32px; align-items: center; }
@@ -195,6 +195,7 @@ h1 .caret { margin-left: .08em; }
 .desk { position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--u) * 4); background: linear-gradient(var(--surface-2), var(--bg)); border-top: 1px solid var(--line); transform: translateZ(0); }
 .toggle3d { position: absolute; right: 8px; bottom: 8px; z-index: 5; font: 400 12px var(--f-mono); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; }
 .toggle3d:hover { border-color: var(--accent); }
+.stage:not(.flat) .toggle3d { right: 0; bottom: -44px; }
 /* modo plano (sin 3D / móvil) */
 .stage.flat { aspect-ratio: auto; perspective: none; --u: 6.4px; max-width: 640px; display: grid; gap: 14px; padding-bottom: 44px; }
 .stage.flat .rig { position: static; transform: none; display: grid; gap: 14px; }

@@ -18,14 +18,17 @@ const s = t[lang];
 <style>
 .rows { border-top: 1px solid var(--line); }
 details { border-bottom: 1px solid var(--line); }
-summary { list-style: none; display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 12px; align-items: baseline; padding: 18px 4px; cursor: pointer; }
+summary { list-style: none; display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 18px 4px; cursor: pointer; }
 summary::-webkit-details-marker { display: none; }
-summary::before { content: "▸"; color: var(--accent); transition: rotate .2s; }
-details[open] summary::before { rotate: 90deg; }
+summary::before { content: ""; width: 12px; height: 12px; justify-self: center; transition: rotate .25s;
+  background: linear-gradient(var(--accent), var(--accent)) center / 100% 1.5px no-repeat, linear-gradient(var(--accent), var(--accent)) center / 1.5px 100% no-repeat; }
+details[open] summary::before { rotate: 45deg; }
+details[open] summary b { color: var(--accent); }
 summary b { font: 600 22px/1.2 var(--f-display); letter-spacing: -0.01em; }
-summary small { font: 400 12px var(--f-mono); color: var(--muted); }
+summary small { font: 400 14px/1.3 var(--f-body); color: var(--fg-2); text-align: right; white-space: nowrap; }
+summary:hover small { color: var(--fg); }
 summary:hover b { color: var(--accent); }
-details p { margin: 0 0 18px 40px; color: var(--fg-2); max-width: 62ch; }
+details p { margin: 0 0 18px 32px; color: var(--fg-2); max-width: 62ch; font-size: 15px; line-height: 1.65; }
 @media (max-width: 900px) {
   summary { grid-template-columns: 20px minmax(0, 1fr); }
   summary small { grid-column: 2; }

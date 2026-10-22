@@ -1,6 +1,8 @@
 ---
 import { siGithub } from 'simple-icons';
 import { t, MAIL, type Lang } from '../i18n';
+import Select from './Select.astro';
+import FieldError from './FieldError.astro';
 const { lang } = Astro.props as { lang: Lang };
 const s = t[lang];
 const f = s.form;
@@ -9,7 +11,6 @@ const f = s.form;
 <section id="contacto">
   <div class="contact">
     <div class="intro">
-      <p class="kicker">{s.kContact}</p>
       <h2>{s.hContact}</h2>
       <p class="sub">{s.subContact}</p>
       <ul class="ways">
@@ -29,10 +30,9 @@ const f = s.form;
       <input name="site" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <label>{f.name}<input name="name" required autocomplete="name" /></label>
       <label>{f.mail}<input name="email" type="email" required autocomplete="email" /></label>
-      <label>{f.reason}
-        <select name="reason">{f.reasons.map((r) => <option>{r}</option>)}</select>
-      </label>
+      <div class="field"><span id="reason-label">{f.reason}</span><Select name="reason" options={f.reasons} labelledby="reason-label" /></div>
       <label>{f.msg}<textarea name="msg" rows="4" required placeholder={f.msgPh}></textarea></label>
+      <FieldError required={f.required} email={f.badMail} />
       <button class="btn send" type="submit"><span aria-hidden="true">→</span>{f.send}</button>
       <p class="status" id="contact-status" role="status"></p>
     </form>
@@ -42,7 +42,7 @@ const f = s.form;
 <script is:inline>
   document.getElementById('contact-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const form = e.target, btn = form.querySelector('button'), out = document.getElementById('contact-status');
+    const form = e.target, btn = form.querySelector('.send'), out = document.getElementById('contact-status');
     btn.disabled = true;
     try {
       const r = await fetch('/api/contact', { method: 'POST', body: JSON.stringify(Object.fromEntries(new FormData(form))) });
@@ -58,7 +58,6 @@ const f = s.form;
 
 <style>
   .contact { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: clamp(24px, 5vw, 56px); display: grid; grid-template-columns: 1fr minmax(0, 420px); gap: clamp(28px, 5vw, 64px); align-items: center; }
-  .kicker { font: 500 12px var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
   .sub { margin: 0 0 28px; }
   .ways { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
   .ways li { display: flex; align-items: center; gap: 14px; }
@@ -73,13 +72,13 @@ const f = s.form;
   .copy:hover { color: var(--fg); border-color: var(--muted); }
 
   .card { background: var(--surface-2); border: 1px solid var(--line); border-radius: 16px; padding: clamp(20px, 3vw, 28px); display: grid; gap: 16px; box-shadow: 0 24px 60px -30px var(--shadow); }
-  label { display: grid; gap: 6px; font-size: 14px; color: var(--muted); }
-  input, select, textarea { font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; width: 100%; }
+  label, .field { position: relative; display: grid; gap: 6px; font-size: 14px; color: var(--muted); }
+  input, textarea { font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; width: 100%; }
   .hp { position: absolute; left: -9999px; }
   .status { margin: 0; font-size: 14px; color: var(--muted); }
   .status:empty { display: none; }
   textarea { resize: vertical; min-height: 96px; }
-  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
+  input:focus, textarea:focus { outline: none; border-color: var(--accent); }
   .send { justify-self: start; display: inline-flex; align-items: center; gap: 10px; border-radius: 999px; padding: 6px 20px 6px 6px; }
   .send span { width: 30px; height: 30px; border-radius: 50%; background: var(--accent-ink); color: var(--accent); display: grid; place-items: center; }
 

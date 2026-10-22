@@ -1,0 +1,44 @@
+---
+// Aviso de campo incompleto que reemplaza el globo nativo del navegador. Va dentro del <form>:
+// intercepta el evento `invalid` y se muestra bajo el primer campo con error.
+interface Props { required: string; email: string }
+const { required, email } = Astro.props;
+---
+
+<div class="err" role="alert" hidden data-required={required} data-email={email}><i aria-hidden="true">!</i><span></span></div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.err').forEach((bubble) => {
+    const form = bubble.closest('form')!, text = bubble.querySelector('span')!;
+    let field: HTMLElement | null = null;
+    const hide = () => {
+      bubble.hidden = true;
+      field?.removeAttribute('aria-describedby');
+      field = null;
+    };
+    form.addEventListener('invalid', (e) => {
+      e.preventDefault(); // suprime el globo nativo
+      const el = e.target as HTMLInputElement;
+      if (form.querySelector(':invalid') !== el) return; // solo el primer campo con error
+      hide();
+      text.textContent = el.validity.valueMissing ? bubble.dataset.required! : bubble.dataset.email!;
+      el.parentElement!.append(bubble);
+      bubble.id ||= 'field-error';
+      el.setAttribute('aria-describedby', bubble.id);
+      field = el;
+      bubble.hidden = false;
+    }, true);
+    form.addEventListener('input', hide);
+    form.addEventListener('focusout', (e) => { if (e.target === field) hide(); });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') hide(); });
+  });
+</script>
+
+<style>
+  .err { position: absolute; z-index: 25; top: 100%; left: 14px; margin-top: -6px; display: flex; align-items: center; gap: 10px; padding: 8px 14px 8px 8px; background: var(--surface); color: var(--fg); border: 1px solid var(--line); border-radius: 10px; font-size: 14px; white-space: nowrap; box-shadow: 0 14px 30px -10px var(--shadow); animation: pop .18s ease; }
+  .err[hidden] { display: none; }
+  .err::before { content: ""; position: absolute; left: 18px; top: -6px; width: 10px; height: 10px; background: var(--surface); border-left: 1px solid var(--line); border-top: 1px solid var(--line); rotate: 45deg; }
+  i { width: 24px; height: 24px; border-radius: 6px; display: grid; place-items: center; background: #f2711c; color: #fff; font: 700 15px/1 var(--f-body); font-style: normal; }
+  @keyframes pop { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .err { animation: none; } }
+</style>

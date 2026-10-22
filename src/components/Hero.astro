@@ -48,7 +48,8 @@ const prompt = 'ignacio@aroza ~ >';
         </div>
         <div class="neck"></div><div class="foot"></div>
       </div>
-      <div class="lamp" aria-hidden="true"><i class="shade"></i><i class="arm"></i><i class="base"></i></div>
+      <button class="lamp" id="lamp" type="button" aria-pressed="false" aria-label={s.lampOn}><i class="shade"></i><i class="arm"></i><i class="base"></i></button>
+      <span class="hint" id="hint" aria-hidden="true">↑ {s.lampHint}</span>
       <div class="laptop">
         <div class="lscreen">
           <div class="screen">
@@ -71,7 +72,7 @@ const prompt = 'ignacio@aroza ~ >';
   </div>
 </header>
 
-<script is:inline define:vars={{ MAIL, copiedTxt: s.copied, on3d: s.on3d, off3d: s.off3d }}>
+<script is:inline define:vars={{ MAIL, copiedTxt: s.copied, on3d: s.on3d, off3d: s.off3d, lampOn: s.lampOn, lampOff: s.lampOff }}>
   const $ = (q) => document.querySelector(q);
   const stage = $('#stage'), rig = $('#rig'), toggle = $('#toggle3d');
 
@@ -99,6 +100,26 @@ const prompt = 'ignacio@aroza ~ >';
   });
   stage.addEventListener('pointerleave', () => { rig.style.setProperty('--rx', '0deg'); rig.style.setProperty('--ry', '0deg'); });
 
+  // Siempre arranca apagada (modo oscuro). Al prender, la luz se expande desde la lámpara como una vista de transición.
+  const lamp = $('#lamp'), root = document.documentElement;
+  lamp.addEventListener('click', () => {
+    const on = root.dataset.theme !== 'light';
+    const apply = () => {
+      if (on) root.dataset.theme = 'light'; else delete root.dataset.theme;
+      lamp.setAttribute('aria-pressed', on);
+      lamp.setAttribute('aria-label', on ? lampOff : lampOn);
+      $('#hint').hidden = true;
+    };
+    if (reduce || !document.startViewTransition) return apply();
+    const r = lamp.querySelector('.shade').getBoundingClientRect();
+    const x = r.left + r.width / 2, y = r.top + r.height / 2;
+    const rad = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    document.startViewTransition(apply).ready.then(() => root.animate(
+      { clipPath: [`circle(0 at ${x}px ${y}px)`, `circle(${rad}px at ${x}px ${y}px)`] },
+      { duration: 900, easing: 'ease-out', pseudoElement: '::view-transition-new(root)' }
+    ));
+  });
+
   document.querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', () => {
     const label = b.textContent;
     const done = () => {
@@ -124,13 +145,14 @@ h1 .caret { margin-left: .08em; }
 .copied { font: 400 12px var(--f-mono); color: var(--muted); min-height: 18px; margin-top: 10px; }
 /* escena */
 .stage { container-type: inline-size; position: relative; width: 100%; max-width: 760px; margin-inline: auto; aspect-ratio: 8 / 7.4; perspective: 1500px; --u: 1cqw; }
-.stage .halo { position: absolute; inset: -6% -6% -2%; background: radial-gradient(60% 55% at 78% 30%, color-mix(in srgb, var(--lamp) 16%, transparent), transparent 70%), radial-gradient(70% 60% at 40% 45%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%); pointer-events: none; }
+.stage .halo { position: absolute; inset: -6% -6% -2%; background: radial-gradient(70% 60% at 40% 45%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%); pointer-events: none; }
+:global(:root[data-theme="light"]) .stage .halo { background: radial-gradient(65% 60% at 80% 55%, color-mix(in srgb, var(--lamp) 38%, transparent), transparent 72%); }
 .rig { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .25s ease-out; }
 .monitor { position: absolute; left: calc(var(--u) * 8); top: calc(var(--u) * 2); width: calc(var(--u) * 84); height: calc(var(--u) * 47); transform: translateZ(-50px); }
 .bezel { position: absolute; inset: 0 0 calc(var(--u) * 5) 0; background: #05070b; border: 1px solid #202a3a; border-radius: calc(var(--u) * 1.4); padding: calc(var(--u) * 1); box-shadow: 0 30px 60px -20px #000, inset 0 0 0 1px #0f1521; }
 .neck { position: absolute; left: 50%; bottom: calc(var(--u) * 1); width: calc(var(--u) * 5); height: calc(var(--u) * 4.2); translate: -50% 0; background: linear-gradient(#1a2230, #0f1521); }
 .foot { position: absolute; left: 50%; bottom: 0; width: calc(var(--u) * 20); height: calc(var(--u) * 1.2); translate: -50% 0; background: #1a2230; border-radius: 4px; }
-.screen { width: 100%; height: 100%; background: #0a0e14; border-radius: calc(var(--u) * .7); overflow: hidden; font-family: var(--f-mono); color: var(--fg); display: flex; flex-direction: column; position: relative; }
+.screen { --fg: #e6eaf2; --muted: #8b97ad; --accent: #7cb7ff; --accent-ink: #06121f; width: 100%; height: 100%; background: #0a0e14; border-radius: calc(var(--u) * .7); overflow: hidden; font-family: var(--f-mono); color: var(--fg); display: flex; flex-direction: column; position: relative; }
 .screen::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(0,0,0,.14) 2px 3px), linear-gradient(115deg, rgba(255,255,255,.05), transparent 35%); }
 .term-body { flex: 1; padding: calc(var(--u) * 1.8) calc(var(--u) * 2.2); font-size: calc(var(--u) * 1.85); line-height: 1.6; overflow: hidden; }
 .term-body .p { color: var(--accent); }
@@ -158,28 +180,40 @@ h1 .caret { margin-left: .08em; }
 .deck { height: calc(var(--u) * 7); background: linear-gradient(#222c3d, #151c28); clip-path: polygon(3% 0, 97% 0, 100% 100%, 0 100%); position: relative; }
 .deck::before { content: ""; position: absolute; inset: calc(var(--u) * 1) calc(var(--u) * 5) calc(var(--u) * 2.4); background: repeating-linear-gradient(90deg, #0b1018 0 calc(var(--u) * 2.2), transparent calc(var(--u) * 2.2) calc(var(--u) * 2.5)); mask: repeating-linear-gradient(0deg, #000 0 calc(var(--u) * 1.1), transparent calc(var(--u) * 1.1) calc(var(--u) * 1.4)); opacity: .9; }
 .deck::after { content: ""; position: absolute; left: 50%; bottom: calc(var(--u) * .4); width: calc(var(--u) * 9); height: calc(var(--u) * 1.3); translate: -50% 0; background: #1b2434; border-radius: 3px; }
-.lamp { position: absolute; right: calc(var(--u) * 3); top: calc(var(--u) * 52); width: calc(var(--u) * 10); height: calc(var(--u) * 16); transform: translateZ(10px); }
+.lamp { position: absolute; right: calc(var(--u) * 3); top: calc(var(--u) * 52); width: calc(var(--u) * 10); height: calc(var(--u) * 16); transform: translateZ(10px); background: none; border: 0; padding: 0; cursor: pointer; animation: beckon 2.4s ease-in-out infinite; }
+.lamp:hover .shade { background: color-mix(in srgb, var(--lamp) 55%, #4a5266); }
+.hint { position: absolute; right: calc(var(--u) * 1); top: calc(var(--u) * 69); transform: translateZ(10px); font: 400 max(11px, calc(var(--u) * 1.6)) var(--f-mono); color: var(--lamp); white-space: nowrap; animation: beckon-text 2.4s ease-in-out infinite; }
+.hint[hidden] { display: none; }
+@keyframes beckon { 0%, 100% { filter: drop-shadow(0 0 0 transparent); } 50% { filter: drop-shadow(0 0 12px color-mix(in srgb, var(--lamp) 55%, transparent)); } }
+@keyframes beckon-text { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+:global(:root[data-theme="light"]) .lamp { animation: none; filter: drop-shadow(0 0 22px color-mix(in srgb, var(--lamp) 90%, transparent)); }
+:global(:root[data-theme="light"]) .lamp .shade { background: var(--lamp); }
 .lamp i { position: absolute; left: 50%; translate: -50% 0; }
-.lamp .shade { top: 0; width: calc(var(--u) * 8); height: calc(var(--u) * 6); background: var(--lamp); clip-path: polygon(18% 0, 82% 0, 100% 100%, 0 100%); box-shadow: 0 0 60px var(--lamp); filter: drop-shadow(0 0 14px color-mix(in srgb, var(--lamp) 70%, transparent)); }
+.lamp .shade { top: 0; width: calc(var(--u) * 8); height: calc(var(--u) * 6); background: #4a5266; clip-path: polygon(18% 0, 82% 0, 100% 100%, 0 100%); transition: background .4s; }
 .lamp .arm { top: calc(var(--u) * 6); width: calc(var(--u) * .7); height: calc(var(--u) * 7); background: #2a3447; }
 .lamp .base { top: calc(var(--u) * 13); width: calc(var(--u) * 6); height: calc(var(--u) * 1); background: #2a3447; border-radius: 3px; }
-.desk { position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--u) * 4); background: linear-gradient(#18202d, #0c1016); border-top: 1px solid #263044; transform: translateZ(0); }
-.toggle3d { position: absolute; right: 8px; bottom: 8px; z-index: 5; font: 400 12px var(--f-mono); background: #0e141d; border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; }
+.desk { position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--u) * 4); background: linear-gradient(var(--surface-2), var(--bg)); border-top: 1px solid var(--line); transform: translateZ(0); }
+.toggle3d { position: absolute; right: 8px; bottom: 8px; z-index: 5; font: 400 12px var(--f-mono); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; }
 .toggle3d:hover { border-color: var(--accent); }
 /* modo plano (sin 3D / móvil) */
 .stage.flat { aspect-ratio: auto; perspective: none; --u: 6.4px; max-width: 640px; display: grid; gap: 14px; padding-bottom: 44px; }
 .stage.flat .rig { position: static; transform: none; display: grid; gap: 14px; }
-.stage.flat .halo, .stage.flat .lamp, .stage.flat .desk, .stage.flat .neck, .stage.flat .foot, .stage.flat .deck { display: none; }
+.stage.flat .halo, .stage.flat .desk, .stage.flat .neck, .stage.flat .foot, .stage.flat .deck { display: none; }
 .stage.flat .monitor, .stage.flat .laptop { position: static; width: auto; height: auto; transform: none; }
 .stage.flat .bezel { position: static; height: auto; padding: 6px; }
 .stage.flat .screen { min-height: 220px; }
 .stage.flat .lscreen { height: auto; border-radius: 12px; padding: 6px; }
 .stage.flat .lscreen .screen { min-height: 0; }
+.stage.flat .lamp { position: absolute; right: 8px; top: -6px; width: 40px; height: 64px; transform: none; z-index: 5; }
+.stage.flat .lamp i { scale: .5; transform-origin: top; }
+.stage.flat .lamp .shade { width: 64px; height: 38px; }
+.stage.flat .hint { right: 8px; top: 62px; transform: none; font-size: 11px; z-index: 5; }
 @media (max-width: 900px) {
   .hero { grid-template-columns: minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) {
   .fade { animation: none; }
   .rig { transition: none; }
+  .lamp, .hint { animation: none; }
 }
 </style>

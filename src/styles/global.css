@@ -13,11 +13,21 @@
   --accent: #7cb7ff;
   --accent-ink: #06121f;
   --lamp: #ffcf7a;
+  --fg-2: #b9c3d6;
+  --shadow: #000;
   --f-display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
   --f-body: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
   color-scheme: dark;
 }
+:root[data-theme="light"] {
+  --bg: #f7f3ea; --surface: #fffdf8; --surface-2: #efe8d9; --line: #ddd3bf;
+  --fg: #1c2230; --fg-2: #3b4558; --muted: #5b6578;
+  --accent: #1c63c4; --accent-ink: #fff; --shadow: rgba(70, 50, 20, .28);
+  color-scheme: light;
+}
+/* Prender/apagar la lámpara: la luz se expande desde ella (ver Hero.astro). */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {

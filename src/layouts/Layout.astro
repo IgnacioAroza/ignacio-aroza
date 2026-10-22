@@ -3,6 +3,7 @@ import '../styles/global.css';
 import { t, type Lang } from '../i18n';
 import Chat from '../components/Chat.astro';
 import Dial from '../components/Dial.astro';
+import Rain from '../components/Rain.astro';
 
 const { lang } = Astro.props as { lang: Lang };
 const s = t[lang];
@@ -28,17 +29,27 @@ const s = t[lang];
           <a href="#otros">{s.nav.otros}</a>
           <a href="#contacto">{s.nav.contacto}</a>
         </div>
-        <div class="seg" role="group" aria-label="Idioma">
-          <a href="/" aria-current={lang === 'es' ? 'true' : undefined}>ES</a>
-          <a href="/en/" aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
-        </div>
+        <a class="sw" href={lang === 'es' ? '/en/' : '/'} data-lang={lang} aria-label={lang === 'es' ? 'Switch to English' : 'Cambiar a español'}>
+          <span>ES</span><span>EN</span><i>{lang.toUpperCase()}</i>
+        </a>
       </nav>
       <slot />
     </div>
+    <Rain />
     <Dial lang={lang} />
     <Chat lang={lang} />
   </body>
 </html>
+
+<script>
+  // El knob se desliza antes de navegar al otro idioma.
+  const sw = document.querySelector<HTMLAnchorElement>('.sw')!;
+  sw.addEventListener('click', (e) => {
+    e.preventDefault();
+    sw.classList.add('flip');
+    setTimeout(() => (location.href = sw.href), 180);
+  });
+</script>
 
 <style>
 nav { display: flex; align-items: center; gap: 24px; padding-block: 20px; flex-wrap: wrap; }
@@ -47,10 +58,12 @@ nav { display: flex; align-items: center; gap: 24px; padding-block: 20px; flex-w
 .links { display: flex; gap: 22px; margin-left: 8px; flex-wrap: wrap; }
 .links a { color: var(--muted); text-decoration: none; font-size: 15px; }
 .links a:hover { color: var(--fg); }
-.seg { margin-left: auto; display: flex; gap: 4px; font: 500 13px var(--f-mono); }
-.seg a { text-decoration: none; border: 1px solid transparent; padding: 4px 8px; border-radius: 6px; color: var(--muted); }
-.seg a[aria-current] { color: var(--fg); border-color: var(--line); background: var(--surface); }
+.sw { margin-left: auto; position: relative; display: flex; width: 64px; height: 32px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); font: 500 11px var(--f-mono); color: var(--muted); text-decoration: none; }
+.sw span { flex: 1; display: grid; place-items: center; }
+.sw i { position: absolute; top: 2px; left: 2px; width: 26px; height: 26px; border-radius: 50%; background: var(--fg); color: var(--bg); display: grid; place-items: center; font-style: normal; font-weight: 600; box-shadow: 0 2px 6px #0008; transition: transform .2s ease; }
+.sw[data-lang="en"] i, .sw.flip i { transform: translateX(32px); }
+.sw[data-lang="en"].flip i { transform: none; }
 @media (max-width: 900px) {
-  .seg, .links { margin-left: 0; }
+  .sw, .links { margin-left: 0; }
 }
 </style>

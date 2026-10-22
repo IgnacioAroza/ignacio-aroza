@@ -1,0 +1,43 @@
+<canvas id="rain" aria-hidden="true"></canvas>
+
+<script>
+  // Lluvia de dígitos de fondo. Se estira a toda la ventana y no corre con prefers-reduced-motion.
+  const cv = document.getElementById('rain') as HTMLCanvasElement;
+  const ctx = cv.getContext('2d')!;
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const SIZE = 16, FRAME = 1000 / 24;
+    let drops: number[] = [], last = 0;
+    const fit = () => {
+      const dpr = devicePixelRatio || 1;
+      cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.font = `${SIZE}px "Geist Mono", ui-monospace, monospace`;
+      drops = Array.from({ length: Math.ceil(innerWidth / SIZE) }, () => -Math.random() * innerHeight / SIZE);
+    };
+    const tick = (now: number) => {
+      requestAnimationFrame(tick);
+      if (document.hidden || now - last < FRAME) return;
+      last = now;
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.fillStyle = 'rgba(0,0,0,.1)';
+      ctx.fillRect(0, 0, innerWidth, innerHeight);
+      ctx.globalCompositeOperation = 'source-over';
+      drops.forEach((y, i) => {
+        if (y > 0) {
+          ctx.fillStyle = document.documentElement.dataset.theme === 'light' ? 'rgba(22,130,70,.9)' : 'rgba(61,220,132,.9)';
+          ctx.fillText(String(Math.floor(Math.random() * 10)), i * SIZE, y * SIZE);
+        }
+        drops[i] = y * SIZE > innerHeight && Math.random() > 0.975 ? 0 : y + 1;
+      });
+    };
+    addEventListener('resize', fit);
+    fit();
+    requestAnimationFrame(tick);
+  }
+</script>
+
+<style>
+  /* Opacidad baja, y más apagada en el centro (donde está el texto) que en los bordes. */
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: .22;
+    mask-image: linear-gradient(90deg, #000, rgba(0,0,0,.25) 30%, rgba(0,0,0,.25) 70%, #000); }
+</style>

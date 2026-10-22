@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { t, type Lang } from '../i18n';
 import Chat from '../components/Chat.astro';
+import Dial from '../components/Dial.astro';
 
 const { lang } = Astro.props as { lang: Lang };
 const s = t[lang];
@@ -34,6 +35,7 @@ const s = t[lang];
       </nav>
       <slot />
     </div>
+    <Dial lang={lang} />
     <Chat lang={lang} />
   </body>
 </html>

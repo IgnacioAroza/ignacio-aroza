@@ -1,0 +1,55 @@
+---
+import * as si from 'simple-icons';
+import { t, type Lang } from '../i18n';
+
+const { lang } = Astro.props as { lang: Lang };
+const s = t[lang];
+
+// [nombre, slug de simple-icons]. Sin slug (o sacado de simple-icons por marca) → iniciales.
+const STACK = {
+  front: [['TypeScript', 'typescript'], ['JavaScript', 'javascript'], ['React', 'react'], ['Next.js', 'nextdotjs'], ['Vue', 'vuedotjs'],
+    ['Astro', 'astro'], ['Tailwind CSS', 'tailwindcss'], ['Three.js', 'threedotjs'], ['Electron', 'electron']],
+  back: [['Node.js', 'nodedotjs'], ['NestJS', 'nestjs'], ['Express', 'express'], ['Python', 'python'], ['.NET', 'dotnet'],
+    ['C#', ''], ['Prisma', 'prisma'], ['TypeORM', 'typeorm'], ['Zod', 'zod'],
+    ['GraphQL', 'graphql'], ['WebSockets', ''], ['Kafka', 'apachekafka']],
+  db: [['PostgreSQL', 'postgresql'], ['MySQL', 'mysql'], ['Supabase', 'supabase'], ['MongoDB', 'mongodb'], ['Redis', 'redis']],
+  infra: [['Vercel', 'vercel'], ['Railway', 'railway'], ['Render', 'render'], ['Docker', 'docker'], ['Kubernetes', 'kubernetes'],
+    ['AWS', ''], ['Google Cloud', 'googlecloud'], ['Linux', 'linux'],
+    ['Nginx', 'nginx'], ['GitHub Actions', 'githubactions']],
+  tools: [['Git', 'git'], ['GitHub', 'github'], ['Playwright', ''], ['Figma', 'figma']],
+  ai: [['Claude', 'claude'], ['OpenAI', ''], ['n8n', 'n8n']],
+};
+const icon = (slug: string) => (si as Record<string, { path: string }>)['si' + slug[0]?.toUpperCase() + slug.slice(1)];
+---
+
+<section id="stack">
+  <h2>{s.hStack}</h2>
+  <p class="sub">{s.subStack}</p>
+  {Object.entries(STACK).map(([group, items]) => (
+    <>
+      <h3 class="stack-h">{s.stackGroups[group as keyof typeof STACK]}</h3>
+      <ul class="stack">
+        {items.map(([name, slug]) => {
+          const i = slug && icon(slug);
+          return (
+            <li>
+              {i ? <svg viewBox="0 0 24 24" aria-hidden="true"><path d={i.path} /></svg> : <span class="mono" aria-hidden="true">{name.length <= 3 ? name : name.match(/[A-Z]/g)?.slice(0, 2).join('').padEnd(2, name[1])}</span>}
+              {name}
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  ))}
+</section>
+
+<style>
+.stack-h { font: 500 12px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 28px 0 10px; }
+.stack-h:first-of-type { margin-top: 0; }
+.stack { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.stack li { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); font: 500 14px var(--f-body); }
+.stack svg { width: 20px; height: 20px; fill: var(--muted); flex: none; }
+.stack .mono { width: 20px; flex: none; font: 600 11px var(--f-mono); color: var(--muted); text-align: center; }
+.stack li:hover { border-color: var(--accent); }
+.stack li:hover svg { fill: var(--fg); }
+</style>

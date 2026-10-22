@@ -1,0 +1,41 @@
+---
+import { t, type Lang } from '../i18n';
+
+const { lang } = Astro.props as { lang: Lang };
+const s = t[lang];
+---
+
+<section id="proyectos">
+  <h2>{s.hProj}</h2>
+  <p class="sub">{s.subProj}</p>
+  <div class="cases">
+    {s.cases.map((c) => (
+      <article class="case">
+        <div class="shot"><div class="ui"><i></i><div><i></i><i></i><i></i></div></div><em>{s.shot}</em></div>
+        <div class="tag">{c.tag}</div>
+        <h3>{c.name}</h3>
+        <p>{c.desc}</p>
+        <ul class="chips">{c.chips.map((x) => <li>{x}</li>)}</ul>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+.cases { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 48px; }
+.case { display: grid; gap: 14px; min-width: 0; align-content: start; }
+.shot { aspect-ratio: 16 / 10; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); position: relative; overflow: hidden; }
+.shot .ui { position: absolute; inset: 14% 8%; display: grid; grid-template-columns: 22% 1fr; gap: 8px; }
+.shot .ui > i, .shot .ui > div > i { background: var(--surface-2); border-radius: 6px; }
+.shot .ui > div { display: grid; grid-template-rows: 18% 1fr 1fr; gap: 8px; }
+.shot .ui > div > i:first-child { background: color-mix(in srgb, var(--accent) 22%, var(--surface-2)); }
+.shot em { position: absolute; left: 12px; bottom: 10px; font: 400 11px var(--f-mono); color: var(--muted); font-style: normal; }
+.tag { font: 500 12px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.case h3 { font: 800 26px/1.1 var(--f-display); letter-spacing: -0.02em; margin: 0; }
+.case p { margin: 0; color: #b9c3d6; max-width: 56ch; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; padding: 0; margin: 0; list-style: none; }
+.chips li { font: 400 12px var(--f-mono); color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; }
+@media (max-width: 900px) {
+  .cases { grid-template-columns: minmax(0, 1fr); }
+}
+</style>

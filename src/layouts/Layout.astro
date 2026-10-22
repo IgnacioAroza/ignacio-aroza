@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { t, type Lang } from '../i18n';
+import Chat from '../components/Chat.astro';
 
 const { lang } = Astro.props as { lang: Lang };
 const s = t[lang];
@@ -33,6 +34,7 @@ const s = t[lang];
       </nav>
       <slot />
     </div>
+    <Chat lang={lang} />
   </body>
 </html>
 

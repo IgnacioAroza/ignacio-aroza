@@ -17,6 +17,7 @@ export const t = {
     stack: ['APIs REST', 'Bases de datos relacionales', 'Integraciones con servicios externos', 'IA aplicada'],
     proy: ['Transporte', 'Caja de feria', 'Miami Getaway', 'Objetivos con IA'],
     cont: 'Escribime directo o dejá tu pregunta en el chat de abajo.',
+    chat: { ph: 'Preguntame por mis proyectos…', label: 'Pregunta', send: 'Enviar', left: 'te quedan {n} preguntas hoy', wait: 'Pensando…', limit: 'Llegaste al límite de hoy. Escribime por mail y te respondo yo.', err: 'No pude responder ahora. Probá de nuevo en un rato o escribime por mail.' },
     links: [['proyectos', '~/proyectos', '↵'], ['otros', '~/stack', '↵'], ['contacto', '~/contacto', '↵']],
     hStack: 'Con qué trabajo',
     subStack: 'Las herramientas que uso día a día para llevar un sistema de la idea a producción.',
@@ -63,6 +64,7 @@ export const t = {
     stack: ['REST APIs', 'Relational databases', 'Third-party integrations', 'Applied AI'],
     proy: ['Transport', 'Fair checkout', 'Miami Getaway', 'Goals with AI'],
     cont: 'Write to me directly or leave a question in the chat below.',
+    chat: { ph: 'Ask me about my projects…', label: 'Question', send: 'Send', left: '{n} questions left today', wait: 'Thinking…', limit: "You've hit today's limit. Email me and I'll answer myself.", err: "Couldn't answer right now. Try again later or email me." },
     links: [['proyectos', '~/projects', '↵'], ['otros', '~/more', '↵'], ['contacto', '~/contact', '↵']],
     hStack: 'What I work with',
     subStack: 'The tools I use every day to take a system from idea to production.',
@@ -97,3 +99,18 @@ export const t = {
 export type Lang = keyof typeof t;
 
 export const MAIL = 'ignacioaroza.ia@gmail.com';
+
+// [nombre, slug de simple-icons]. Sin slug (o sacado de simple-icons por marca) → iniciales.
+export const STACK = {
+  front: [['TypeScript', 'typescript'], ['JavaScript', 'javascript'], ['React', 'react'], ['Next.js', 'nextdotjs'], ['Vue', 'vuedotjs'],
+    ['Astro', 'astro'], ['Tailwind CSS', 'tailwindcss'], ['Three.js', 'threedotjs'], ['Electron', 'electron']],
+  back: [['Node.js', 'nodedotjs'], ['NestJS', 'nestjs'], ['Express', 'express'], ['Python', 'python'], ['.NET', 'dotnet'],
+    ['C#', ''], ['Prisma', 'prisma'], ['TypeORM', 'typeorm'], ['Zod', 'zod'],
+    ['GraphQL', 'graphql'], ['WebSockets', ''], ['Kafka', 'apachekafka']],
+  db: [['PostgreSQL', 'postgresql'], ['MySQL', 'mysql'], ['Supabase', 'supabase'], ['MongoDB', 'mongodb'], ['Redis', 'redis']],
+  infra: [['Vercel', 'vercel'], ['Railway', 'railway'], ['Render', 'render'], ['Docker', 'docker'], ['Kubernetes', 'kubernetes'],
+    ['AWS', ''], ['Google Cloud', 'googlecloud'], ['Linux', 'linux'],
+    ['Nginx', 'nginx'], ['GitHub Actions', 'githubactions']],
+  tools: [['Git', 'git'], ['GitHub', 'github'], ['Playwright', ''], ['Figma', 'figma']],
+  ai: [['Claude', 'claude'], ['OpenAI', ''], ['n8n', 'n8n']],
+};

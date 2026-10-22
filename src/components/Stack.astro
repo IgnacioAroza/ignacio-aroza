@@ -1,24 +1,10 @@
 ---
 import * as si from 'simple-icons';
-import { t, type Lang } from '../i18n';
+import { t, STACK, type Lang } from '../i18n';
 
 const { lang } = Astro.props as { lang: Lang };
 const s = t[lang];
 
-// [nombre, slug de simple-icons]. Sin slug (o sacado de simple-icons por marca) → iniciales.
-const STACK = {
-  front: [['TypeScript', 'typescript'], ['JavaScript', 'javascript'], ['React', 'react'], ['Next.js', 'nextdotjs'], ['Vue', 'vuedotjs'],
-    ['Astro', 'astro'], ['Tailwind CSS', 'tailwindcss'], ['Three.js', 'threedotjs'], ['Electron', 'electron']],
-  back: [['Node.js', 'nodedotjs'], ['NestJS', 'nestjs'], ['Express', 'express'], ['Python', 'python'], ['.NET', 'dotnet'],
-    ['C#', ''], ['Prisma', 'prisma'], ['TypeORM', 'typeorm'], ['Zod', 'zod'],
-    ['GraphQL', 'graphql'], ['WebSockets', ''], ['Kafka', 'apachekafka']],
-  db: [['PostgreSQL', 'postgresql'], ['MySQL', 'mysql'], ['Supabase', 'supabase'], ['MongoDB', 'mongodb'], ['Redis', 'redis']],
-  infra: [['Vercel', 'vercel'], ['Railway', 'railway'], ['Render', 'render'], ['Docker', 'docker'], ['Kubernetes', 'kubernetes'],
-    ['AWS', ''], ['Google Cloud', 'googlecloud'], ['Linux', 'linux'],
-    ['Nginx', 'nginx'], ['GitHub Actions', 'githubactions']],
-  tools: [['Git', 'git'], ['GitHub', 'github'], ['Playwright', ''], ['Figma', 'figma']],
-  ai: [['Claude', 'claude'], ['OpenAI', ''], ['n8n', 'n8n']],
-};
 const icon = (slug: string) => (si as Record<string, { path: string }>)['si' + slug[0]?.toUpperCase() + slug.slice(1)];
 ---
 

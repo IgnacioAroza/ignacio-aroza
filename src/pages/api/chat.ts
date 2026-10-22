@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { getSecret } from 'astro:env/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { t, STACK, MAIL } from '../../i18n';
+import { hit } from '../../lib/limit';
 
 export const prerender = false;
 
@@ -35,20 +36,6 @@ Contacto: ${MAIL} · github.com/IgnacioAroza`;
 
 const json = (body: object, status = 200) => Response.json(body, { status });
 
-// Upstash REST: INCR + EXPIRE en un pipeline. NX deja el TTL del primer pedido del día.
-async function hit(ip: string) {
-  const url = getSecret('UPSTASH_REDIS_REST_URL'), token = getSecret('UPSTASH_REDIS_REST_TOKEN');
-  const key = `chat:${ip}`;
-  const r = await fetch(`${url}/pipeline`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${token}` },
-    body: JSON.stringify([['INCR', key], ['EXPIRE', key, '86400', 'NX']]),
-  });
-  if (!r.ok) throw new Error(`upstash ${r.status}`);
-  const [{ result }] = await r.json();
-  return result as number;
-}
-
 export const POST: APIRoute = async ({ request, clientAddress }) => {
   const { q } = await request.json().catch(() => ({}));
   if (typeof q !== 'string' || !q.trim() || q.length > MAX_Q) return json({ error: 'bad_request' }, 400);
@@ -56,7 +43,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || clientAddress;
   let used: number;
   try {
-    used = await hit(ip);
+    used = await hit(`chat:${ip}`);
   } catch (e) {
     console.error(e);
     return json({ error: 'unavailable' }, 503);

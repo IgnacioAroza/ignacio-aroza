@@ -25,8 +25,8 @@ const f = s.form;
       </ul>
     </div>
 
-    <!-- ponytail: abre el cliente de correo (mailto). Para recibirlo sin que el visitante tenga mail configurado, endpoint con Resend en Vercel. -->
-    <form class="card" id="contact-form" data-mail={MAIL} data-subj={f.subj}>
+    <form class="card" id="contact-form" data-ok={f.ok} data-err={`${f.err} ${MAIL}`}>
+      <input name="site" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <label>{f.name}<input name="name" required autocomplete="name" /></label>
       <label>{f.mail}<input name="email" type="email" required autocomplete="email" /></label>
       <label>{f.reason}
@@ -34,16 +34,25 @@ const f = s.form;
       </label>
       <label>{f.msg}<textarea name="msg" rows="4" required placeholder={f.msgPh}></textarea></label>
       <button class="btn send" type="submit"><span aria-hidden="true">→</span>{f.send}</button>
+      <p class="status" id="contact-status" role="status"></p>
     </form>
   </div>
 </section>
 
 <script is:inline>
-  document.getElementById('contact-form').addEventListener('submit', (e) => {
+  document.getElementById('contact-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const d = new FormData(e.target), { mail, subj } = e.target.dataset;
-    const body = `${d.get('msg')}\n\n— ${d.get('name')} <${d.get('email')}>`;
-    location.href = `mailto:${mail}?subject=${encodeURIComponent(`${subj}: ${d.get('reason')}`)}&body=${encodeURIComponent(body)}`;
+    const form = e.target, btn = form.querySelector('button'), out = document.getElementById('contact-status');
+    btn.disabled = true;
+    try {
+      const r = await fetch('/api/contact', { method: 'POST', body: JSON.stringify(Object.fromEntries(new FormData(form))) });
+      if (!r.ok) throw 0;
+      form.reset();
+      out.textContent = form.dataset.ok;
+    } catch {
+      out.textContent = form.dataset.err;
+    }
+    btn.disabled = false;
   });
 </script>
 
@@ -66,6 +75,9 @@ const f = s.form;
   .card { background: var(--surface-2); border: 1px solid var(--line); border-radius: 16px; padding: clamp(20px, 3vw, 28px); display: grid; gap: 16px; box-shadow: 0 24px 60px -30px #000; }
   label { display: grid; gap: 6px; font-size: 14px; color: var(--muted); }
   input, select, textarea { font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; width: 100%; }
+  .hp { position: absolute; left: -9999px; }
+  .status { margin: 0; font-size: 14px; color: var(--muted); }
+  .status:empty { display: none; }
   textarea { resize: vertical; min-height: 96px; }
   input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
   .send { justify-self: start; display: inline-flex; align-items: center; gap: 10px; border-radius: 999px; padding: 6px 20px 6px 6px; }

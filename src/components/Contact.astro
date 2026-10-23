@@ -82,5 +82,10 @@ const f = s.form;
   .send { justify-self: start; display: inline-flex; align-items: center; gap: 10px; border-radius: 999px; padding: 6px 20px 6px 6px; }
   .send span { width: 30px; height: 30px; border-radius: 50%; background: var(--accent-ink); color: var(--accent); display: grid; place-items: center; }
 
-  @media (max-width: 760px) { .contact { grid-template-columns: 1fr; } }
+  @media (max-width: 760px) {
+    .contact { grid-template-columns: 1fr; }
+    .ways li:first-child { flex-wrap: wrap; }
+    .ways li:first-child > div { flex: 1 1 calc(100% - 54px); }
+    .copy { margin-left: 54px; }
+  }
 </style>

@@ -197,18 +197,16 @@ h1 .caret { margin-left: .08em; }
 .toggle3d:hover { border-color: var(--accent); }
 .stage:not(.flat) .toggle3d { right: 0; bottom: -44px; }
 /* modo plano (sin 3D / móvil) */
-.stage.flat { aspect-ratio: auto; perspective: none; --u: 6.4px; max-width: 640px; display: grid; gap: 14px; padding-bottom: 44px; }
-.stage.flat .rig { position: static; transform: none; display: grid; gap: 14px; }
+.stage.flat { aspect-ratio: auto; perspective: none; --u: 6.4px; max-width: 640px; display: grid; gap: 14px; padding-bottom: 84px; }
+.stage.flat .rig { position: relative; transform: none; display: grid; gap: 14px; }
 .stage.flat .halo, .stage.flat .desk, .stage.flat .neck, .stage.flat .foot, .stage.flat .deck { display: none; }
 .stage.flat .monitor, .stage.flat .laptop { position: static; width: auto; height: auto; transform: none; }
 .stage.flat .bezel { position: static; height: auto; padding: 6px; }
 .stage.flat .screen { min-height: 220px; }
 .stage.flat .lscreen { height: auto; border-radius: 12px; padding: 6px; }
 .stage.flat .lscreen .screen { min-height: 0; }
-.stage.flat .lamp { position: absolute; right: 8px; top: -6px; width: 40px; height: 64px; transform: none; z-index: 5; }
-.stage.flat .lamp i { scale: .5; transform-origin: top; }
-.stage.flat .lamp .shade { width: 64px; height: 38px; }
-.stage.flat .hint { right: 8px; top: 62px; transform: none; font-size: 11px; z-index: 5; }
+.stage.flat .lamp { --u: 3.6px; position: absolute; top: calc(100% + 14px); right: auto; bottom: auto; left: 8px; transform: none; z-index: 5; }
+.stage.flat .hint { top: calc(100% + 30px); right: auto; bottom: auto; left: 56px; transform: none; font-size: 11px; z-index: 5; }
 @media (max-width: 900px) {
   .hero { grid-template-columns: minmax(0, 1fr); }
 }

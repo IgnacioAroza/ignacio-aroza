@@ -42,11 +42,12 @@ export const t = {
     hProj: 'Lo que construí, y para qué servía',
     subProj: 'Cuatro sistemas a fondo: qué problema resolvían y cómo están hechos.',
     shot: 'captura (reemplazar)',
-    cases: [
-      { tag: 'SaaS multi-tenant', name: 'Transporte', img: '/proyectos/transporte.webp', crop: [270, 170, 1080], desc: 'Nació para un camionero que quería saber cuánto gana en cada viaje. Registra kilómetros, litros y gastos, calcula la ganancia de cada viaje y anota los cobros en efectivo y en cheques de terceros, con un tablero por mes. Cada empresa de transporte ve solo sus datos.', chips: ['Next.js', 'NestJS', 'Prisma', 'PostgreSQL'] },
-      { tag: 'Punto de venta', name: 'Caja de feria', img: '/proyectos/caja-de-feria.webp', crop: [230, 95, 1110], desc: 'Reemplazó la carga a mano de un puesto de librería en una feria. Los vendedores toman pedidos desde el celular, la caja los recibe en tiempo real y el stock se descuenta solo, incluso si se anula un cobro. Reportes exportables a Excel y PDF, y varios negocios aislados entre sí.', chips: ['Next.js', 'Supabase Realtime', 'Playwright'] },
-      { tag: 'Alquileres · reservas', name: 'Miami Getaway', img: '/proyectos/miami-getaway.webp', crop: [48, 200, 1100], desc: 'Alquiler de apartamentos, villas, yates y autos en Miami: reservas, fotos de cada propiedad y reseñas sincronizadas desde Google. Detrás, un panel de administración desde donde el dueño maneja el negocio completo: propiedades, reservas, clientes, pagos, proveedores, comprobantes en PDF y un resumen mensual de cómo le fue.', chips: ['React', 'Express', 'PostgreSQL', 'Cloudinary'] },
-      { tag: 'App personal · IA', name: 'Objetivos con IA', img: '/proyectos/objetivos-con-ia.webp', crop: [245, 245, 830], desc: 'App para fijar y seguir objetivos, con un coach de IA que antes de responder lee tus objetivos, tareas pendientes y reflexiones, compara tu avance con el del año y te dice honestamente qué está atrasado. Recuerda lo que le contaste entre conversaciones y propone hasta 3 tareas que agregás con un clic.', chips: ['Next.js', 'Supabase', 'Claude API', 'Streaming'] },
+    site: 'Ver el sitio',
+    cases: <Case>[
+      { tag: 'SaaS multi-tenant', name: 'Transporte', img: '/proyectos/transporte.webp', crop: [0, 60, 1920], desc: 'Nació para un camionero que quería saber cuánto gana en cada viaje. Registra kilómetros, litros y gastos, calcula la ganancia de cada viaje y anota los cobros en efectivo y en cheques de terceros, con un tablero por mes. Cada empresa de transporte ve solo sus datos.', chips: ['Next.js', 'NestJS', 'Prisma', 'PostgreSQL'] },
+      { tag: 'Punto de venta', name: 'Caja de feria', img: '/proyectos/caja-de-feria.webp', crop: [0, 60, 1920], desc: 'Reemplazó la carga a mano de un puesto de librería en una feria. Los vendedores toman pedidos desde el celular, la caja los recibe en tiempo real y el stock se descuenta solo, incluso si se anula un cobro. Reportes exportables a Excel y PDF, y varios negocios aislados entre sí.', chips: ['Next.js', 'Supabase Realtime', 'Playwright'] },
+      { tag: 'Alquileres · reservas', name: 'Miami Getaway', url: 'https://miami-getaway.com', img: '/proyectos/miami-getaway.webp', crop: [0, 60, 1920], desc: 'Alquiler de apartamentos, villas, yates y autos en Miami: reservas, fotos de cada propiedad y reseñas sincronizadas desde Google. Detrás, un panel de administración desde donde el dueño maneja el negocio completo: propiedades, reservas, clientes, pagos, proveedores, comprobantes en PDF y un resumen mensual de cómo le fue.', chips: ['React', 'Express', 'PostgreSQL', 'Cloudinary'] },
+      { tag: 'App personal · IA', name: 'Objetivos con IA', img: '/proyectos/objetivos-con-ia.webp', crop: [0, 60, 1920], desc: 'App para fijar y seguir objetivos, con un coach de IA que antes de responder lee tus objetivos, tareas pendientes y reflexiones, compara tu avance con el del año y te dice honestamente qué está atrasado. Recuerda lo que le contaste entre conversaciones y propone hasta 3 tareas que agregás con un clic.', chips: ['Next.js', 'Supabase', 'Claude API', 'Streaming'] },
     ],
   },
   en: {
@@ -91,16 +92,28 @@ export const t = {
     hProj: 'What I built, and what it was for',
     subProj: 'Four systems in depth: the problem each solved and how it is built.',
     shot: 'screenshot (replace)',
-    cases: [
-      { tag: 'Multi-tenant SaaS', name: 'Transport', img: '/proyectos/transporte.webp', crop: [270, 170, 1080], desc: 'Built for a trucker who wanted to know how much he makes on each trip. It logs kilometers, liters and expenses, calculates the profit of every trip and records payments in cash and third-party checks, with a monthly dashboard. Each transport company only sees its own data.', chips: ['Next.js', 'NestJS', 'Prisma', 'PostgreSQL'] },
-      { tag: 'Point of sale', name: 'Fair checkout', img: '/proyectos/caja-de-feria.webp', crop: [230, 95, 1110], desc: 'It replaced manual bookkeeping at a stationery stall in a fair. Sellers take orders on their phones, the checkout receives them in real time and stock is deducted automatically, even when a payment is voided. Reports export to Excel and PDF, and several businesses run isolated from each other.', chips: ['Next.js', 'Supabase Realtime', 'Playwright'] },
-      { tag: 'Rentals · bookings', name: 'Miami Getaway', img: '/proyectos/miami-getaway.webp', crop: [48, 200, 1100], desc: 'Apartment, villa, yacht and car rentals in Miami: bookings, photos for every property and reviews synced from Google. Behind it, an admin panel where the owner runs the whole business: properties, bookings, clients, payments, suppliers, PDF receipts and a monthly summary of how it went.', chips: ['React', 'Express', 'PostgreSQL', 'Cloudinary'] },
-      { tag: 'Personal app · AI', name: 'Goals with AI', img: '/proyectos/objetivos-con-ia.webp', crop: [245, 245, 830], desc: "App to set and track goals, with an AI coach that reads your goals, pending tasks and reflections before answering, compares your progress with the year's and tells you honestly what is behind. It remembers what you told it across conversations and suggests up to 3 tasks you add with one click.", chips: ['Next.js', 'Supabase', 'Claude API', 'Streaming'] },
+    site: 'Visit site',
+    cases: <Case>[
+      { tag: 'Multi-tenant SaaS', name: 'Transport', img: '/proyectos/transporte.webp', crop: [0, 60, 1920], desc: 'Built for a trucker who wanted to know how much he makes on each trip. It logs kilometers, liters and expenses, calculates the profit of every trip and records payments in cash and third-party checks, with a monthly dashboard. Each transport company only sees its own data.', chips: ['Next.js', 'NestJS', 'Prisma', 'PostgreSQL'] },
+      { tag: 'Point of sale', name: 'Fair checkout', img: '/proyectos/caja-de-feria.webp', crop: [0, 60, 1920], desc: 'It replaced manual bookkeeping at a stationery stall in a fair. Sellers take orders on their phones, the checkout receives them in real time and stock is deducted automatically, even when a payment is voided. Reports export to Excel and PDF, and several businesses run isolated from each other.', chips: ['Next.js', 'Supabase Realtime', 'Playwright'] },
+      { tag: 'Rentals · bookings', name: 'Miami Getaway', url: 'https://miami-getaway.com', img: '/proyectos/miami-getaway.webp', crop: [0, 60, 1920], desc: 'Apartment, villa, yacht and car rentals in Miami: bookings, photos for every property and reviews synced from Google. Behind it, an admin panel where the owner runs the whole business: properties, bookings, clients, payments, suppliers, PDF receipts and a monthly summary of how it went.', chips: ['React', 'Express', 'PostgreSQL', 'Cloudinary'] },
+      { tag: 'Personal app · AI', name: 'Goals with AI', img: '/proyectos/objetivos-con-ia.webp', crop: [0, 60, 1920], desc: "App to set and track goals, with an AI coach that reads your goals, pending tasks and reflections before answering, compares your progress with the year's and tells you honestly what is behind. It remembers what you told it across conversations and suggests up to 3 tasks you add with one click.", chips: ['Next.js', 'Supabase', 'Claude API', 'Streaming'] },
     ],
   },
 } as const;
 
 export type Lang = keyof typeof t;
+
+// `url` opcional: solo algunos proyectos tienen sitio público para enlazar.
+export type Case = {
+  tag: string;
+  name: string;
+  url?: string;
+  img: string;
+  crop: readonly [number, number, number];
+  desc: string;
+  chips: readonly string[];
+};
 
 export const MAIL = 'ignacioaroza.ia@gmail.com';
 
